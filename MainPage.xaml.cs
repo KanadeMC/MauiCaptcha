@@ -18,23 +18,19 @@ public partial class MainPage : ContentPage
 
     private async void LogIn()
     {
-        // Если капча видна — проверяем её
         if (CaptchaStackLayout.IsVisible)
         {
             if (string.IsNullOrEmpty(CaptchaEntry.Text) || CaptchaEntry.Text != _validCaptcha)
             {
                 await DisplayAlertAsync("Ошибка", "Неверная капча", "OK");
-                // Обновляем капчу при каждой новой попытке
                 GenerateCaptcha();
-                CaptchaEntry.Text = string.Empty; // очищаем поле
+                CaptchaEntry.Text = string.Empty;
                 return;
             }
-            // Капча верна — сбрасываем флаги
             CaptchaStackLayout.IsVisible = false;
             invalidInputCount = 0;
         }
 
-        // Проверка логина/пароля
         Actions act = new();
         User? u = act.GetUser(Login.Text, Password.Text);
     
@@ -42,7 +38,6 @@ public partial class MainPage : ContentPage
         {
             invalidInputCount++;
         
-            // Если ошибок стало 3 или больше — показываем капчу
             if (invalidInputCount >= 3)
             {
                 CaptchaStackLayout.IsVisible = true;
@@ -54,11 +49,9 @@ public partial class MainPage : ContentPage
         else
         {
             CurrentUser = u;
-            // Успешный вход — сбрасываем всё
             invalidInputCount = 0;
             CaptchaStackLayout.IsVisible = false;
             await DisplayAlertAsync("Успех", $"Добро пожаловать, {u.Login}", "OK");
-            // Здесь переход на следующий экран
         }
     }
     private void LoginButton(object? sender, EventArgs e)
@@ -67,7 +60,7 @@ public partial class MainPage : ContentPage
     }
     private void GenerateCaptcha()
     {
-        invalidInputCount = 0; // Обновляем количество неправильных вводов
+        invalidInputCount = 0;
         SixLaborsCaptchaModule generator = new SixLaborsCaptchaModule(new SixLaborsCaptchaOptions
         {
             Width = 300,
@@ -76,9 +69,9 @@ public partial class MainPage : ContentPage
             NoiseRate = 50,
             DrawLines = 15
         });
-        _validCaptcha = SixLaborsCaptcha.Core.Extensions.GetUniqueKey(6); // Генерируем ключ-строку
-        byte[] captchaImageBytes = generator.Generate(_validCaptcha); // Генерируем изображение
-        var imageSource = ImageSource.FromStream(() => new MemoryStream(captchaImageBytes)); // Превращаем байты изображения в ImageSource через создание картинки в MemoryStream
-        CaptchaImage.Source = imageSource; // Меняем картинку в UI
+        _validCaptcha = SixLaborsCaptcha.Core.Extensions.GetUniqueKey(6); 
+        byte[] captchaImageBytes = generator.Generate(_validCaptcha);
+        var imageSource = ImageSource.FromStream(() => new MemoryStream(captchaImageBytes)); 
+        CaptchaImage.Source = imageSource; 
     }
 }

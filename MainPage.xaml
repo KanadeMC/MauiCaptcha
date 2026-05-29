@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ZALUPA.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <VerticalStackLayout HorizontalOptions="Center" Spacing="25" WidthRequest="500">
+                <Label HorizontalTextAlignment="Center">Логин</Label>
+                <Entry x:Name="Login" HorizontalTextAlignment="Center" MaxLength="30"/>
+                <Label HorizontalTextAlignment="Center">Пароль</Label>
+                <Entry x:Name="Password" HorizontalTextAlignment="Center" IsPassword="True" MaxLength="30"/>
+                <Button x:Name="EnterButton" HorizontalOptions="Center" Text="Войти" Clicked="LoginButton" />
+            </VerticalStackLayout>
+            <VerticalStackLayout IsVisible="False" x:Name="CaptchaStackLayout">
+                <Image WidthRequest="300" HeightRequest="200" x:Name="CaptchaImage"/>
+                <Label>Введите капчу:</Label>
+                <Entry x:Name="CaptchaEntry"></Entry>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
